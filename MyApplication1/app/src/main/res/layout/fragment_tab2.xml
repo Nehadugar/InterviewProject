@@ -1,9 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffff">
+    android:background="#ffff"
+    android:id="@+id/container">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,13 +21,13 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:visibility="visible" />
             <TextView
                 android:id="@+id/title_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:padding="2dp"
                 android:textSize="18sp"
                 android:gravity="center"
@@ -73,4 +74,4 @@
 
         </RelativeLayout>
     </ScrollView>
-</LinearLayout>
+</FrameLayout>

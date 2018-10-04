@@ -1,12 +1,17 @@
 package com.example.nehajain.myapplication1;
 
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +30,7 @@ import java.util.List;
 import static android.media.CamcorderProfile.get;
 import static com.example.nehajain.myapplication1.R.layout.activity_tab_adapter;
 import static com.example.nehajain.myapplication1.R.layout.tooltip;
+import static java.security.AccessController.getContext;
 
 public class TabAdapter extends RecyclerView.Adapter<TabAdapter.MyViewHolder> {
 
@@ -69,6 +75,7 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.MyViewHolder> {
         return moviesList.size();
     }
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private SharedPreferences sp;
         private SharedPreferences.Editor editor;
@@ -96,27 +103,31 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.MyViewHolder> {
             button.setOnClickListener(new View.OnClickListener() {
 
                 @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    Movies movies = moviesLists.get(position);
-                    Intent intent = new Intent( TabAdapter.context, Tab2.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    editor.putString("title",movies.getTitle());
-                    editor.putString("image",movies.getImage());
-                    editor.putString("rating",movies.getRating());
-                    editor.putString("releaseYear",movies.getReleaseYear());
-                    editor.putString("genre",genreStr);
-                    editor.commit();
-                    context.startActivity(intent);
+                public void onClick(final View view) {
+                    final int position = getAdapterPosition();
 
-                    Log.d("title ==== ", movies.getTitle());
-                    Log.d("rating ===== ", movies.getRating());
-                    Log.d("releaseYear ==== ", movies.getReleaseYear());
-                    Log.d("genre ====== ", genreStr);
-                    Log.d("imagess ======= ", movies.getImage());
+                    final AlertDialog.Builder builder = new AlertDialog.Builder( TabAdapter.context );
 
+                    builder.setMessage( "Are You Sure ?" ).setPositiveButton( "Confirm",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Movies movies = moviesLists.get(position);
+                                    Tab2 tab2Fragemnt = new Tab2();
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("title", movies.getTitle());
+                                    bundle.putString("image", movies.getImage());
+                                    bundle.putString( "rating",movies.getRating() );
+                                    bundle.putString( "releaseYear",movies.getReleaseYear() );
+                                    bundle.putString( "genre",genreStr );
+                                    tab2Fragemnt.setArguments(bundle);
+                                    AppCompatActivity activity = (AppCompatActivity)view.getContext();
+                                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tab2Fragemnt).addToBackStack(null).commit();
+                                }
+                            } ).setNegativeButton( "Cancel", null ).create().show();
                 }
-            });
+            } );
         }
     }
 }

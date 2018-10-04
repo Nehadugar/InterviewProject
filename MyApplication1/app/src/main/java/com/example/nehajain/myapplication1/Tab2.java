@@ -32,14 +32,29 @@ public class Tab2 extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
 
-        sp = getActivity().getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
-        editor = sp.edit();
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+             title1 = bundle.get("title").toString();
+             image1 = bundle.get("image").toString();
+             rating1 = bundle.get("rating" ).toString();
+             release_year1 = bundle.get( "releaseYear" ).toString();
+             genre1 = bundle.get( "genre" ).toString();
+        }
 
-        title1 = sp.getString("title", "");
+        /*title1 = sp.getString("title", "");
         image1 = sp.getString("image", "");
         rating1 = sp.getString("rating", "");
         release_year1 = sp.getString("releaseYear", "");
-        genre1 = sp.getString("genre", "");
+        genre1 = sp.getString("genre", "");*/
+
+       /* if (bundle != null) {
+            title1 = bundle.getString("title");
+            image1 = bundle.getString( "image" );
+            rating1 = bundle.getString( "rating" );
+            release_year1 = bundle.getString( "releaseYear" );
+            genre1 = bundle.getString( "genre" );
+
+        }*/
 
 
         title_view = view.findViewById(R.id.title_view);
@@ -60,12 +75,11 @@ public class Tab2 extends Fragment {
         if (genre1 != null) {
             genre_view.setText(genre1);
         }
-        if (!image1.equals("") && image1 != null) {
             Picasso.get()
                     .load(image1)
                     //.placeholder(R.drawable.user_dummy_male)
                     .into(image_view);
-        }
+
             return view;
     }
 

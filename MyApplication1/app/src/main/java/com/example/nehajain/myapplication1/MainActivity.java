@@ -1,5 +1,6 @@
 package com.example.nehajain.myapplication1;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -19,8 +21,7 @@ import java.util.PriorityQueue;
 
 public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    public static String sessUserId;
-
+    ProgressDialog progressDialog;
     private ViewPager mViewPager;
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -30,20 +31,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
 
-        sp = getSharedPreferences( "MyPrefs", Context.MODE_PRIVATE );
-        editor = sp.edit();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        // Progress dialog
+        progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog.setCancelable(false);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter( getSupportFragmentManager() );
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById( R.id.view_pager );
-        mViewPager.setAdapter( mSectionsPagerAdapter );
 
-        TabLayout tabLayout = (TabLayout) findViewById( R.id.tab_layout );
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = findViewById( R.id.view_pager );
+        mViewPager.setAdapter( mSectionsPagerAdapter );
+        getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + mViewPager.getCurrentItem());
+        TabLayout tabLayout = findViewById( R.id.tab_layout );
         tabLayout.setupWithViewPager( mViewPager );
     }
+
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         public SectionsPagerAdapter( FragmentManager fm ) {
@@ -62,11 +68,12 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     return null;
             }
+
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 2 total pages.
             return 2;
         }
 
